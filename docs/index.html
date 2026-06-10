@@ -268,7 +268,7 @@
                 locale: options.locale
             };
 
-            const response = await fetch(CORS_PROXY + encodeURIComponent(WARP_API), {
+            const response = await fetch(CORS_PROXY + WARP_API, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
