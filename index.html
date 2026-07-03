@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WireGuard config for WARP</title>
+<meta name="description" content="Generate a WireGuard configuration for Cloudflare WARP entirely in your browser. No account, no install, no server.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230a0a0a'/%3E%3Cpath d='M12 3.4l6.6 2.9v5c0 4.3-2.9 7-6.6 8.8-3.7-1.8-6.6-4.5-6.6-8.8v-5L12 3.4z' fill='none' stroke='%238aa07a' stroke-width='1.7'/%3E%3Cpath d='M9 12.3l1.9 1.9 3.7-3.8' fill='none' stroke='%238aa07a' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.bunny.net; font-src https://fonts.bunny.net; connect-src https://proxy.cors.sh; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
+<script src="assets/framebuster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css2?family=Source+Serif+4:wght@400;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 3.5v6c0 5-3.4 8.2-8 10.5-4.6-2.3-8-5.5-8-10.5v-6L12 2z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <span class="brand-name">warp-gen</span>
+      <span class="brand-tag">client-side</span>
+    </div>
+    <div class="header-nav-links">
+      <a class="nav-action" href="https://github.com/ocean-mars/wg-warp-gen" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 015 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5C19.14 20.6 22 16.77 22 12.25 22 6.58 17.52 2 12 2z"/></svg>
+        <span class="full">Source</span>
+      </a>
+      <a class="nav-action" href="https://github.com/ViRb3/wgcf" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        <span class="full">CLI script</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">keys generated and stored locally, in-browser</div>
+    <h1 class="hero-title">A WireGuard config for Cloudflare WARP, generated on the spot.</h1>
+    <p class="hero-description">Private key generated locally, never sent anywhere. Free, no account needed.</p>
+    <div class="disclaimer-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="16.3" r="0.9" fill="currentColor" stroke="none"/></svg>
+      <span class="disclaimer-text" align="justify"><strong>Not made by Cloudflare.</strong> warp-gen is an independent, unofficial, community-built tool. It is not affiliated with, endorsed by, or sponsored by Cloudflare, Inc., or the WireGuard project. "Cloudflare," "WARP," and "WireGuard" are trademarks of their respective owners, used here only to describe compatibility. See the <a href="#legal-terms" class="legal-link">Terms &amp; Disclaimer</a> and <a href="#legal-privacy" class="legal-link">Privacy Policy</a> below.</span>
+    </div>
+
+  </section>
+
+  <section class="install-container">
+    <div class="install-titlebar">
+      <div class="titlebar-dots"><span></span><span></span><span></span></div>
+      <span class="install-titlebar-label">WARP Generator</span>
+    </div>
+    <div class="install-body">
+
+      <button id="generateBtn" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3.5v6c0 5-3.4 8.2-8 10.5-4.6-2.3-8-5.5-8-10.5v-6L12 2z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span id="generateBtnText">Generate WARP config</span>
+      </button>
+
+      <details class="manual-toggle" id="advancedToggle">
+        <summary>
+          <span class="summary-label">
+            <svg class="summary-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+            <span>Advanced options</span>
+          </span>
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="manual-toggle-body">
+          <form id="optionsForm" autocomplete="off">
+            <div class="field-stack">
+              <div class="form-field">
+                <label class="form-label" for="f-dns">DNS servers</label>
+                <select class="form-input" id="f-dns">
+                  <option value="194.242.2.2, 193.138.218.118" selected>Mullvad (Preferred) — 194.242.2.2, 193.138.218.118</option>
+                  <option value="1.1.1.1, 1.0.0.1">Cloudflare — 1.1.1.1, 1.0.0.1</option>
+                  <option value="9.9.9.9, 149.112.112.112">Quad9 — 9.9.9.9, 149.112.112.112</option>
+                  <option value="76.76.2.0, 76.76.10.0">Control D — 76.76.2.0, 76.76.10.0</option>
+                  <option value="custom">Custom…</option>
+                </select>
+              </div>
+              <div class="form-field hidden" id="f-dns-custom-wrap">
+                <label class="form-label" for="f-dns-custom">Custom DNS servers</label>
+                <input class="form-input" id="f-dns-custom" name="dnsCustom" type="text" placeholder="e.g. 9.9.9.9, 149.112.112.112" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="f-mtu">MTU</label>
+                <input class="form-input" id="f-mtu" name="mtu" type="number" value="1280" inputmode="numeric" autocomplete="off">
+              </div>
+              <div class="form-field span-2">
+                <label class="form-label" for="f-aip">Allowed IPs</label>
+                <select class="form-input" id="f-aip">
+                  <option value="0.0.0.0/0" selected>Default — route everything (0.0.0.0/0)</option>
+                  <option value="0.0.0.0/5, 8.0.0.0/7, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/2, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/6, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/3">Allow Local Network — excludes 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</option>
+                  <option value="custom">Custom…</option>
+                </select>
+              </div>
+              <div class="form-field hidden span-2" id="f-aip-custom-wrap">
+                <label class="form-label" for="f-aip-custom">Custom allowed IPs</label>
+                <input class="form-input" id="f-aip-custom" name="allowedIpsCustom" type="text" placeholder="e.g. 0.0.0.0/0, ::/0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="f-keep">Persistent keepalive (0 = off)</label>
+                <input class="form-input" id="f-keep" name="keepalive" type="number" value="0" min="0" inputmode="numeric" autocomplete="off">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="f-dev">Device type</label>
+                <input class="form-input" id="f-dev" name="deviceType" type="text" value="Linux" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="f-loc">Locale</label>
+                <input class="form-input" id="f-loc" name="locale" type="text" value="en_US" autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+          </form>
+        </div>
+      </details>
+
+      <div id="error" class="warning-banner hidden mt-125">
+        <span class="mark">!</span>
+        <div class="banner-body"><p id="errorText"></p></div>
+      </div>
+
+      <div id="outputSection" class="output-section hidden mt-15">
+
+        <div class="account-user-row">
+          <span class="who" id="accountId">–</span>
+          <span class="status-pill" id="accountType">free</span>
+        </div>
+
+        <div class="provider-meta">
+          <div class="row"><span class="k">Device ID</span><span class="v" id="deviceId">–</span></div>
+          <div class="row"><span class="k">License</span><span class="v" id="license">–</span></div>
+          <div class="row"><span class="k">Created</span><span class="v" id="created">–</span></div>
+          <div class="row"><span class="k">Expires</span><span class="v" id="expires">–</span></div>
+        </div>
+
+        <div class="qr-section">
+          <div class="qr-box" id="qrCode"></div>
+          <p class="qr-label">Scan with the WireGuard mobile app to import directly</p>
+        </div>
+
+        <div class="repo-url-box">
+          <div class="repo-url-label">wireguard configuration</div>
+          <div class="repo-url-field">
+            <div class="repo-url-value" id="configOutput"></div>
+            <button class="repo-copy-btn" id="copyBtn">Copy</button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn" id="downloadBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download warp.conf
+          </button>
+          <button class="btn btn-danger" id="clearBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            Clear from screen
+          </button>
+        </div>
+        <p class="clip-note">Copying or downloading leaves a copy in your clipboard or downloads folder — clear those separately if this device is shared.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <details class="legal-section" id="setup-guide">
+    <summary>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>How to use this config</h3>
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="legal-body">
+      <p>Your <code>warp.conf</code> file contains a private key — treat it like a password. Import it with the official WireGuard app below, then delete stray copies once it's in.</p>
+
+      <h4>1. Install the WireGuard app</h4>
+      <ul>
+        <li><strong>Windows:</strong> <a href="https://www.wireguard.com/install/" target="_blank" rel="noopener noreferrer">wireguard.com/install</a> — download the .msi</li>
+        <li><strong>macOS:</strong> Mac App Store, or the .dmg on wireguard.com/install</li>
+        <li><strong>iOS / Android:</strong> App Store or Google Play (F-Droid also works on Android)</li>
+        <li><strong>Linux:</strong> your package manager, e.g. <code>sudo apt install wireguard</code></li>
+      </ul>
+
+      <h4>2. Import your config</h4>
+      <ul>
+        <li><strong>Phone:</strong> tap + in the app → <em>Scan from QR code</em>, then scan the QR code above. Or tap + → <em>Import from file</em> and pick the downloaded <code>warp.conf</code>.</li>
+        <li><strong>Windows / macOS app:</strong> click <em>Import tunnel(s) from file</em> and select <code>warp.conf</code>.</li>
+        <li><strong>Linux (CLI):</strong> <code>sudo mv warp.conf /etc/wireguard/wg0.conf && sudo wg-quick up wg0</code></li>
+      </ul>
+
+      <h4>3. Turn it on and verify</h4>
+      <ul>
+        <li>Toggle the tunnel on in the app (or it's already active after <code>wg-quick up</code> on Linux).</li>
+        <li>Visit <a href="https://1.1.1.1/help" target="_blank" rel="noopener noreferrer">1.1.1.1/help</a> — it should confirm <code>warp=on</code> once connected.</li>
+      </ul>
+
+      <h4>Notes</h4>
+      <ul>
+        <li>Each <code>warp.conf</code> registers one device. Generate a fresh config per device rather than reusing the same file everywhere.</li>
+        <li>If a network blocks the connection (hotel/school wifi, some carriers), try a different network — WireGuard uses UDP, which some networks restrict.</li>
+        <li>To stop using it, just delete or deactivate the tunnel in the app — nothing else to clean up.</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="privacy-note-block">
+    <h3>What actually leaves your browser</h3>
+    <ul>
+      <li><strong>Your private key</strong> never does — it's generated and stays in this page.</li>
+      <li>Only your <strong>public key</strong> and device type are sent to Cloudflare's WARP registration API, via a CORS proxy since that API doesn't allow direct browser requests.</li>
+      <li>No accounts, cookies, or analytics. Nothing persists between visits — reload the page and your key, config, and QR code are gone.</li>
+      <li>Prefer not to trust a browser tab? Use the <a href="https://github.com/lanrat/wireguard-warp-generator/tree/main/scripts" target="_blank" rel="noopener noreferrer">command-line script</a> instead — same registration flow, runs entirely local.</li>
+    </ul>
+  </div>
+
+  <details class="legal-section" id="legal-privacy">
+    <summary>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 3.5v6c0 5-3.4 8.2-8 10.5-4.6-2.3-8-5.5-8-10.5v-6L12 2z"/></svg>Privacy Policy</h3>
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="legal-body" align="justify">
+      <p>This Privacy Policy explains what happens to data when you use warp-gen (the "Tool"), a static, client-side web page for generating a WireGuard configuration compatible with Cloudflare WARP. warp-gen is an independent project and is not operated by, or affiliated with, Cloudflare, Inc.</p>
+
+      <h4>Data generated on this page</h4>
+      <ul>
+        <li><strong>WireGuard keypair.</strong> Your private and public keys are generated entirely in your browser using client-side JavaScript. Your private key is never transmitted anywhere and is never written to this operator's servers, because this Tool has no backend server that receives it.</li>
+        <li><strong>No local persistence of keys or configs.</strong> The Tool does not use cookies, sessionStorage, localStorage, or IndexedDB to store your keys, configuration, or anything else you generate. Everything lives only in page memory and is lost on reload, navigation, or tab close.</li>
+        <li><strong>Visible in the DOM while on screen.</strong> While a config is displayed, its text (including your private key) briefly exists in the page's DOM and in a canvas element for the QR code, like any on-screen web content. Browser extensions with broad page-content permissions (some clipboard managers, some password managers, accessibility/screen-reader tools, etc.) can technically read visible page content, independent of anything this Tool sends over the network. If you don't fully trust your browser's installed extensions, consider a clean/incognito profile with no extensions enabled, or the command-line script instead.</li>
+      </ul>
+
+      <h4>Data sent to third parties</h4>
+      <ul>
+        <li>To register a device, your <strong>public key</strong>, device type, and locale are sent to Cloudflare's WARP device-registration endpoint. This is an unofficial, undocumented API that Cloudflare operates for its WARP client apps; we do not control it, and Cloudflare's own privacy practices apply to any data it receives.</li>
+        <li>Because that endpoint blocks direct browser requests, the request is relayed through a third-party CORS proxy service. That proxy operator can see the request (including your public key and IP address) in transit, even though it is not the intended data controller. If you would rather avoid any third-party proxy, use the <a href="https://github.com/lanrat/wireguard-warp-generator/tree/main/scripts" target="_blank" rel="noopener noreferrer">command-line script</a> instead, which talks to Cloudflare directly from your own machine.</li>
+        <li>Your <strong>private key is never included</strong> in any request sent by this Tool.</li>
+      </ul>
+
+      <h4>Analytics, tracking, and cookies</h4>
+      <ul>
+        <li>This page sets no cookies and includes no analytics, advertising, or tracking scripts of its own.</li>
+        <li>Fonts are loaded from a third-party font host and the QR code library from a third-party CDN; those requests may be logged by those hosts under their own respective policies, independent of this Tool.</li>
+      </ul>
+
+      <h4>Your responsibility</h4>
+      <ul>
+        <li>The generated configuration file and QR code contain your private key. Treat them like a password: download, copy, or screenshot them only to places you trust, and use "Clear from screen" plus your own clipboard/downloads cleanup on shared or public devices.</li>
+        <li>Your use of Cloudflare's WARP service, once registered, is governed by Cloudflare's own <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="https://www.cloudflare.com/application/terms/" target="_blank" rel="noopener noreferrer">Terms of Service</a>, not by this page.</li>
+      </ul>
+
+      <h4>Changes</h4>
+      <p>Because this is a static page with no account system, there is no mechanism to notify individual users of changes. Check this section for the current version whenever you use the Tool.</p>
+
+      <div class="legal-updated">Last updated: this notice reflects the current version of the page you are viewing.</div>
+    </div>
+  </details>
+
+  <details class="legal-section" id="legal-terms">
+    <summary>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>Terms of Use &amp; Disclaimer</h3>
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="legal-body" align="justify">
+      <div class="trademark-note">
+        <p><strong>Not affiliated with Cloudflare.</strong> warp-gen is an independent, unofficial, open-source community tool. It is not made by, endorsed by, sponsored by, or in any way officially connected to Cloudflare, Inc., WireGuard, or Jason A. Donenfeld. "Cloudflare," "WARP," and "WireGuard" are trademarks of their respective owners and are used here solely to describe interoperability.</p>
+      </div>
+
+      <h4>No warranty</h4>
+      <p>The Tool, its source code, and any configuration it generates are provided <strong>"as is" and "as available,"</strong> without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, title, non-infringement, accuracy, or that the Tool will be uninterrupted, secure, or error-free.</p>
+
+      <h4>Unofficial API dependency</h4>
+      <ul>
+        <li>The Tool relies on an unofficial, undocumented Cloudflare API and a third-party CORS proxy, neither of which we control or guarantee. Either can change, rate-limit, block, or shut down access without notice, at any time, which may break the Tool or cause registration failures.</li>
+        <li>We make no representation that using the Tool will always successfully register a WARP device or that any given account tier, quota, or feature will remain available.</li>
+      </ul>
+
+      <h4>Your responsibilities</h4>
+      <ul>
+        <li>You are solely responsible for complying with Cloudflare's Terms of Service and Acceptable Use Policy when you register a device through this Tool.</li>
+        <li>You are solely responsible for safeguarding the private key and configuration file generated by the Tool. Loss, theft, or exposure of that key is your responsibility, not ours.</li>
+        <li>You are responsible for verifying that use of a VPN/WARP tunnel is lawful in your jurisdiction and appropriate for your use case.</li>
+      </ul>
+
+      <h4>Limitation of liability</h4>
+      <p>To the maximum extent permitted by applicable law, in no event will the creators, contributors, or operators of warp-gen be liable for any direct, indirect, incidental, special, consequential, or exemplary damages — including loss of data, loss of privacy, network downtime, or unauthorized access — arising out of or in connection with your use of, or inability to use, the Tool or any configuration it produces, even if advised of the possibility of such damages.</p>
+
+      <h4>Indemnification</h4>
+      <p>You agree to hold harmless the creators and contributors of this Tool from any claims, losses, or damages arising from your use of the Tool or your violation of any third party's terms of service, including Cloudflare's.</p>
+
+      <h4>Open source</h4>
+      <p>The full source is publicly available for review on <a href="https://github.com/lanrat/wireguard-warp-generator" target="_blank" rel="noopener noreferrer">GitHub</a>, including the standalone command-line script, so you can audit exactly what the Tool does before trusting it with key generation.</p>
+
+      <h4>Not legal advice</h4>
+      <p>This page is general informational boilerplate provided for transparency and is not legal advice. If you need Terms of Service or a Privacy Policy tailored to your specific deployment, audience, or jurisdiction, consult a qualified attorney.</p>
+
+      <div class="legal-updated">Last updated: this notice reflects the current version of the page you are viewing.</div>
+    </div>
+  </details>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-content">
+      <span>WireGuard® is a registered trademark of Jason A. Donenfeld.</span>
+      <div class="footer-links-row">
+        <a class="footer-link" href="#legal-privacy">Privacy Policy •</a>
+        <a class="footer-link" href="#legal-terms">Terms &amp; Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/wireguard.js"></script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>
